@@ -7,6 +7,7 @@ from watcher import Watcher
 from telegram.ext import Updater, CommandHandler
 import threading
 
+watch_thread = None
 events = []
 last_event_num = 1
 retries = 0
