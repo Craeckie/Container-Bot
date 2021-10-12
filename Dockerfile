@@ -7,7 +7,8 @@ FROM python:3-alpine
 #     mkdir -p /churchbot && \
 #     apt-get clean && rm -rf /var/lib/apt/* /var/cache/apt/*
 
-ENV VIRTUAL_ENV=/opt/venv
+ENV VIRTUAL_ENV=/opt/venv \
+    MY_USER=xfs
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
@@ -17,8 +18,8 @@ ADD ./requirements.txt ./
 RUN pip install -r requirements.txt
 
 ADD ./ ./
-RUN chown -R www-data:www-data ./
+RUN chown -R $MY_USER ./
 
-USER www-data
+USER $MY_USER
 
 CMD ["python", "main.py"]
