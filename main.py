@@ -1,10 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import asyncio
 import os
-import random
 import signal
-from time import sleep
 
 from watcher import Watcher
 from telegram.ext import Updater, CommandHandler
@@ -54,7 +51,7 @@ def event_received(event, msg, update, context):
         signal.alarm(2)
 
 
-async def start(update, context):
+def start(update, context):
     if user_id:
         global watch_thread
         if watch_thread is None:
