@@ -16,9 +16,10 @@ def start(update, context):
 
 if __name__ == '__main__':
     socket_path = os.environ.get('DOCKER_SOCKET_PATH', '/var/run/docker.sock')
+    bot_token = os.environ.get('BOT_TOKEN')
     watcher = Watcher(socket_path=socket_path)
 
-    updater = Updater(token='2085905036:AAEb_Oycehn6z4Igr2Q5eZtUjaPiPgLmLDc', use_context=True)
+    updater = Updater(token=bot_token, use_context=True)
     dispatcher = updater.dispatcher
 
     start_handler = CommandHandler('start', start)
