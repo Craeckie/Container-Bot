@@ -24,5 +24,7 @@ if __name__ == '__main__':
     dispatcher = updater.dispatcher
 
     start_handler = CommandHandler('start', start)
+    dispatcher.add_handler(start_handler)
+
     print('Bot is starting to poll..')
     updater.start_polling()
