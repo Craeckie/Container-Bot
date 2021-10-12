@@ -4,6 +4,9 @@ import os
 
 from watcher import Watcher
 from telegram.ext import Updater, CommandHandler
+import threading
+
+watch_thread = None
 
 
 def event_received(event, msg, update, context):
@@ -12,12 +15,26 @@ def event_received(event, msg, update, context):
 
 
 def start(update, context):
-    watcher.listen_events(event_received, update, context)
+    if user_id:
+        global watch_thread
+        if watch_thread is None:
+            watch_thread = threading.Thread(target=watcher.listen_events,
+                                            name="Container Watch",
+                                            args=[event_received, update, context])
+            watch_thread.start()
+            msg = 'Listening to events'
+        else:
+            msg = 'Already listening to events'
+        context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Your user id on TG is ' + update.effective_user.id)
 
 
 if __name__ == '__main__':
+    global user_id
     socket_path = os.environ.get('DOCKER_SOCKET_PATH', '/var/run/docker.sock')
     bot_token = os.environ.get('BOT_TOKEN')
+    user_id = os.environ.get('TG_USER_ID')
     watcher = Watcher(socket_path=socket_path)
 
     updater = Updater(token=bot_token, use_context=True)
