@@ -7,6 +7,7 @@ from telegram.ext import Updater, CommandHandler
 
 
 def event_received(event, msg, update, context):
+    print('Event: ' + msg)
     context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
 
 
@@ -23,4 +24,5 @@ if __name__ == '__main__':
     dispatcher = updater.dispatcher
 
     start_handler = CommandHandler('start', start)
+    print('Bot is starting to poll..')
     updater.start_polling()
